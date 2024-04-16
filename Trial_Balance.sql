@@ -1,7 +1,7 @@
-drop procedure if Exists `PROC_TRIAL_BALANCE_NEW`;
+drop procedure if Exists `PROC_TRIAL_BALANCE`;
 
 DELIMITER $$
-CREATE PROCEDURE `PROC_TRIAL_BALANCE_NEW`(P_ACCOUNT_ID TEXT,
+CREATE PROCEDURE `PROC_TRIAL_BALANCE`(P_ACCOUNT_ID TEXT,
 									  P_ACCOUNT_TYPE TEXT, 
 								      P_ENTRY_DATE_FROM TEXT,
 									  P_ENTRY_DATE_TO TEXT,
@@ -47,7 +47,7 @@ BEGIN
 										SUM(A.Balance) as Balance,
 										A.AccountId 
 								from 
-										dailyaccountbalance A 
+										daily_account_balance A 
 								where 
 										case when "',P_ENTRY_DATE_TO,'" <> -1 then A.ENTRYDATE <= DATE("',P_ENTRY_DATE_TO,'") else true end									
 								group by 

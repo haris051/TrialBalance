@@ -30,10 +30,10 @@ BEGIN
 				Select 
 						
 						I.ACC_ID,
-						I.Description,
-						SUM(I.Debit) as Debit ,
-						SUM(I.Credit) as Credit,	
-						I.AccountId
+						I.Description as 'DESCRIPTION',
+						SUM(I.Debit) as 'DEBIT',
+						SUM(I.Credit) as 'CREDIT',	
+						I.AccountId as 'ID'
 				from(
 						select 
 								

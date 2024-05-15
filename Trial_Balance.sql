@@ -49,7 +49,7 @@ BEGIN
 								from 
 										daily_account_balance A 
 								where 
-										case when "',P_ENTRY_DATE_TO,'" <> -1 then A.ENTRYDATE <= DATE("',P_ENTRY_DATE_TO,'") else true end									
+										case when "',P_ENTRY_DATE_TO,'" <> -1 then A.ENTRYDATE < DATE("',P_ENTRY_DATE_TO,'") else true end									
 								group by 
 										A.AccountId
 							 )B

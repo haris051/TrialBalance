@@ -2,13 +2,13 @@ drop procedure if Exists `PROC_TRIAL_BALANCE`;
 
 DELIMITER $$
 CREATE PROCEDURE `PROC_TRIAL_BALANCE`(P_ACCOUNT_ID TEXT,
-									  P_ACCOUNT_TYPE TEXT, 
-								      P_ENTRY_DATE_FROM TEXT,
-									  P_ENTRY_DATE_TO TEXT,
-								      P_START INT,
-								      P_LENGTH INT,
-								      P_COMPANY_ID INT,
-									  P_YEAR TEXT )
+				      P_ACCOUNT_TYPE TEXT, 
+				      P_ENTRY_DATE_FROM TEXT,
+				      P_ENTRY_DATE_TO TEXT,
+				      P_START INT,
+				      P_LENGTH INT,
+				      P_COMPANY_ID INT,
+				      P_YEAR TEXT )
 BEGIN
 
 
@@ -30,10 +30,10 @@ BEGIN
 				Select 
 						
 						I.ACC_ID,
-						I.Description as 'DESCRIPTION',
-						SUM(I.Debit) as 'DEBIT',
-						SUM(I.Credit) as 'CREDIT',	
-						I.AccountId as 'ID'
+						I.Description as "DESCRIPTION",
+						SUM(I.Debit) as "DEBIT",
+						SUM(I.Credit) as "CREDIT",	
+						I.AccountId as "ID"
 				from(
 						select 
 								
@@ -49,7 +49,7 @@ BEGIN
 								from 
 										daily_account_balance A 
 								where 
-										case when "',P_ENTRY_DATE_TO,'" <> -1 then A.ENTRYDATE < DATE("',P_ENTRY_DATE_TO,'") else true end									
+										case when "',P_ENTRY_DATE_TO,'" <> -1 then A.ENTRYDATE <= DATE("',P_ENTRY_DATE_TO,'") else true end									
 								group by 
 										A.AccountId
 							 )B

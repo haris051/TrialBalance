@@ -1,5 +1,4 @@
-drop procedure if Exists `PROC_TRIAL_BALANCE`;
-
+drop procedure if Exists PROC_TRIAL_BALANCE;
 DELIMITER $$
 CREATE PROCEDURE `PROC_TRIAL_BALANCE`(P_ACCOUNT_ID TEXT,
 				      P_ACCOUNT_TYPE TEXT, 
@@ -31,8 +30,8 @@ BEGIN
 						
 						I.ACC_ID,
 						I.Description as "DESCRIPTION",
-						SUM(I.Debit) as "DEBIT",
-						SUM(I.Credit) as "CREDIT",	
+						Round(SUM(I.Debit),2) as "DEBIT",
+						Round(SUM(I.Credit),2) as "CREDIT",	
 						I.AccountId as "ID"
 				from(
 						select 

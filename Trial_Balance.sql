@@ -30,8 +30,8 @@ BEGIN
 						
 						I.ACC_ID,
 						I.Description as "DESCRIPTION",
-						Round(SUM(I.Debit),2) as "DEBIT",
-						Round(SUM(I.Credit),2) as "CREDIT",	
+						Round(cast(SUM(I.Debit) as Decimal(22,2)),2) as "DEBIT",
+						Round(cast(SUM(I.Credit) as Decimal(22,2)),2) as "CREDIT",	
 						I.AccountId as "ID"
 				from(
 						select 

@@ -65,7 +65,7 @@ BEGIN
 						AND 
 									case when \'',P_ACCOUNT_ID,'\' <> -1 then C.id in (',P_ACCOUNT_ID,') else true end
 						AND 
-									case when \'',P_ACCOUNT_TYPE,'\' <> -1 then D.id =',P_ACCOUNT_TYPE,' else true end
+									case when \'',P_ACCOUNT_TYPE,'\' <> -1 then D.id in (',P_ACCOUNT_TYPE,') else true end
 
 					) I 
 				group by 

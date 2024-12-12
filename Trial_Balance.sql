@@ -34,11 +34,21 @@ BEGIN
 						Round(cast(SUM(I.Credit) as Decimal(22,2)),2) as "CREDIT",	
 						I.AccountId as "ID"
 				from(
+                      select 
+								A.AccountId,
+                                case when A.NegativeCredit <> 0 then A.NegativeCredit else A.Debit end as Debit,
+                                case when A.NegativeDebit <> 0 then A.NegativeDebit else A.Credit end as Credit,
+                                A.ACC_ID,
+                                A.Description
+					  from 
+                            (
 						select 
 								
 								B.AccountId,
-								Case when D.Account_Id = "3" OR D.Account_Id = "2" OR D.Account_Id = "5" then B.Balance else 0 end as Debit,
-								Case when D.Account_Id = "1" OR D.Account_Id = "4" OR D.Account_Id = "6" then B.Balance else 0 end as Credit,
+								Case when (D.Account_Id = "3" OR D.Account_Id = "2" OR D.Account_Id = "5") And (B.Balance >0) then B.Balance else 0 end as Debit,
+								Case when (D.Account_Id = "1" OR D.Account_Id = "4" OR D.Account_Id = "6") And (B.Balance >0) then B.Balance else 0 end as Credit,
+                                Case when (D.Account_Id = "3" OR D.Account_Id = "2" OR D.Account_Id = "5") and (B.Balance < 0) then B.Balance * -1 else 0 end as NegativeDebit,
+								Case when (D.Account_Id = "1" OR D.Account_Id = "4" OR D.Account_Id = "6") and (B.Balance < 0) then B.Balance * -1 else 0 end as NegativeCredit,
 								C.ACC_ID,
 								C.Description
 						from (	
@@ -66,7 +76,7 @@ BEGIN
 									case when \'',P_ACCOUNT_ID,'\' <> -1 then C.id in (',P_ACCOUNT_ID,') else true end
 						AND 
 									case when \'',P_ACCOUNT_TYPE,'\' <> -1 then D.id in (',P_ACCOUNT_TYPE,') else true end
-
+                         ) as A 
 					) I 
 				group by 
 						I.AccountId,
@@ -78,8 +88,6 @@ BEGIN
 			PREPARE STMP FROM @QRY;
 			EXECUTE STMP ;
 			DEALLOCATE PREPARE STMP;
-
-	
 
 
 

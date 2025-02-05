@@ -1,13 +1,13 @@
 drop procedure if Exists PROC_TRIAL_BALANCE;
 DELIMITER $$
-CREATE PROCEDURE `PROC_TRIAL_BALANCE`(P_ACCOUNT_ID TEXT,
-				      P_ACCOUNT_TYPE TEXT, 
-				      P_ENTRY_DATE_FROM TEXT,
-				      P_ENTRY_DATE_TO TEXT,
-				      P_START INT,
-				      P_LENGTH INT,
-				      P_COMPANY_ID INT,
-				      P_YEAR TEXT )
+CREATE PROCEDURE `PROC_TRIAL_BALANCE`( P_ACCOUNT_ID TEXT,
+									  P_ACCOUNT_TYPE TEXT, 
+									  P_ENTRY_DATE_FROM TEXT,
+									  P_ENTRY_DATE_TO TEXT,
+									  P_START INT,
+									  P_LENGTH INT,
+									  P_COMPANY_ID INT,
+									  P_YEAR TEXT )
 BEGIN
 
 
@@ -51,7 +51,7 @@ BEGIN
 								Case when (D.Account_Id = "1" OR D.Account_Id = "4" OR D.Account_Id = "6") and (B.Balance < 0) then B.Balance * -1 else 0 end as NegativeCredit,
 								C.ACC_ID,
 								C.Description
-						from (	
+						from (	select * from (
 								select 
 										SUM(A.Balance) as Balance,
 										A.AccountId 
@@ -60,7 +60,7 @@ BEGIN
 								where 
 										case when "',P_ENTRY_DATE_TO,'" <> -1 then A.ENTRYDATE <= DATE("',P_ENTRY_DATE_TO,'") else true end									
 								group by 
-										A.AccountId
+										A.AccountId)Z where Z.Balance <> 0
 							 )B
 						inner join 
 									Accounts_Id C 
@@ -84,13 +84,9 @@ BEGIN
 						I.Description
 				with ROLLUP having I.AccountId is null OR I.Description is not null LIMIT ',P_START,',',P_LENGTH,';');
 				
-		
 			PREPARE STMP FROM @QRY;
 			EXECUTE STMP ;
 			DEALLOCATE PREPARE STMP;
-
-
-
 
 END $$
 DELIMITER ;
